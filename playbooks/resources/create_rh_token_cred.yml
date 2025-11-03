@@ -1,0 +1,24 @@
+---
+- name: Create Red Hat Token Credential Type in AAP
+  hosts: localhost
+  gather_facts: false
+  vars:
+    controller_credential_types:
+      - name:  Red Hat Console Automation Hub Token
+        description: https://console.redhat.com/ansible/automation-hub/token
+        inputs:
+          fields:
+          - secret: true
+            type: string
+            id: console_token
+            label: Red Hat Console Token
+          required:
+          - console_token
+        injectors:
+          extra_vars:
+            console_token: !unsafe "{{ console_token }}"
+    aap_hostname: aap.example.com # Insert Your AAP Hostname without https:// or http://
+    aap_username: admin # Use Admin or Administrator User
+    aap_password: "SuperSecretPassword" # Insert password Here
+  roles:
+    - {role: infra.aap_configuration.controller_credential_types, when: controller_credential_types is defined}

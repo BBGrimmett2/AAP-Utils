@@ -1,0 +1,31 @@
+---
+- name: Refresh Red Hat SSO API token
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Check that the token variable is set
+      ansible.builtin.assert:
+        that:
+          - user_token is not none
+          - user_token != ""
+        fail_msg: "The 'user_token' variable must be provided and cannot be empty."
+
+    - name: Refresh the API token using Red Hat SSO endpoint
+      ansible.builtin.command: >
+        curl https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+        -d grant_type=refresh_token
+        -d client_id="cloud-services"
+        -d refresh_token="{{ console_token }}"
+        --fail --silent --show-error --output /dev/null
+      register: refresh_result
+      changed_when: false
+      ignore_errors: true
+
+    - name: Check if refresh succeeded
+      ansible.builtin.fail:
+        msg: "Token refresh failed. Curl exited with code {{ refresh_result.rc }}. {{ refresh_result.stderr }}"
+      when: refresh_result.rc != 0
+
+    - name: Print success message
+      ansible.builtin.debug:
+        msg: "Token refreshed successfully."
