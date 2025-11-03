@@ -1,0 +1,24 @@
+# Arhcitecture conditions
+---
+- name: Backup AAP Platform
+  hosts: aap_platform
+  gather_facts: false
+  vars:
+    installer_dir: /opt/ansible/installer/aap-2.6.1-containerized
+    backuop_dir: /opt/ansible/backups
+    inventory_path: /opt/ansible/installer/aap-2.6.1-containerized/inventory-growth
+    timestamp: "{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}"
+    backup_file: "aap_platform_backup_{{ timestamp }}.tar.gz"
+  tasks:
+    - name: Ensure backup directory exists
+      ansible.builtin.file:
+        path: "{{ backuop_dir }}"
+        state: directory
+        mode: '0755'
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Create AAP platform backup
+      ansible.builtin.command: >
+        cd {{ installer_dir }} && ansible-playbook -i {{ inventory_path }} ansible.containerized_installer.backup -e backup_dir={{ backuop_dir }}
+      
