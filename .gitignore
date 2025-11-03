@@ -1,0 +1,7 @@
+roles/git
+exports/
+collections/ansible/containerized_installer
+playbooks/config-as-code*
+playbooks/platform*
+inventory
+vars.yml

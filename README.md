@@ -1,0 +1,1 @@
+# WARNING: Ensure you copy the ansible.containerized_installer collection from your setup bundle
