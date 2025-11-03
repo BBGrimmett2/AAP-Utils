@@ -17,6 +17,6 @@
         group: "{{ ansible_user }}"
 
     - name: Create AAP platform backup
-      ansible.builtin.command: >
+      ansible.builtin.shell: >
         cd {{ installer_dir }} && ansible-playbook -i {{ inventory_path }} ansible.containerized_installer.backup -e backup_dir={{ backuop_dir }}
       
