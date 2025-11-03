@@ -3,6 +3,5 @@ exports/
 collections/ansible/containerized_installer
 playbooks/config-as-code*
 playbooks/platform-restore.yml
-inventory
 vars.yml
-playbooks/resources/create_rh_token_cred.yml
+playbooks/resources/create_rh_token_cred.yml``

@@ -1,0 +1,39 @@
+# This is the AAP installer inventory file intended for the Container growth deployment topology.
+# This inventory file expects to be run from the host where AAP will be installed.
+# Please consult the Ansible Automation Platform product documentation about this topology's tested hardware configuration.
+# https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.5/html/tested_deployment_models/container-topologies
+#
+# Please consult the docs if you're unsure what to add
+# For all optional variables please consult the included README.md
+# or the Ansible Automation Platform documentation:
+# https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.5/html/containerized_installation
+
+# This section is for your AAP Utility host
+# -----------------------------------------------------
+[automationutility]
+sb-dev01.local.starbase.icu
+
+# This section is for your AAP Gateway host(s)
+# -----------------------------------------------------
+[automationgateway]
+sb-aap01.local.starbase.icu
+
+# This section is for your AAP Controller host(s)
+# -----------------------------------------------------
+[automationcontroller]
+sb-aap01.local.starbase.icu
+
+# This section is for your AAP Automation Hub host(s)
+# -----------------------------------------------------
+[automationhub]
+sb-aap01.local.starbase.icu
+
+# This section is for your AAP EDA Controller host(s)
+# -----------------------------------------------------
+[automationeda]
+sb-aap01.local.starbase.icu
+
+# This section is for the AAP database
+# -----------------------------------------------------
+[database]
+sb-aap01.local.starbase.icu
