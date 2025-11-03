@@ -18,8 +18,8 @@
         injectors:
           extra_vars:
             console_token: !unsafe "{{ console_token }}"
-    aap_hostname: aap.example.com # Insert Your AAP Hostname without https:// or http://
+    aap_hostname: sb-aap01.local.starbase.icu # Insert Your AAP Hostname without https:// or http://
     aap_username: admin # Use Admin or Administrator User
-    aap_password: "SuperSecretPassword" # Insert password Here
+    aap_password: "?KP#i$!m7kXGsQGh" # Insert password Here
   roles:
     - {role: infra.aap_configuration.controller_credential_types, when: controller_credential_types is defined}

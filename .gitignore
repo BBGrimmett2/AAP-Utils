@@ -5,3 +5,4 @@ playbooks/config-as-code*
 playbooks/platform*
 inventory
 vars.yml
+playbooks/resources/create_rh_token_cred.yml

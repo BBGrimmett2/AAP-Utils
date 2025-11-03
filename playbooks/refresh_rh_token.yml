@@ -6,8 +6,8 @@
     - name: Check that the token variable is set
       ansible.builtin.assert:
         that:
-          - user_token is not none
-          - user_token != ""
+          - console_token is not none
+          - console_token != ""
         fail_msg: "The 'user_token' variable must be provided and cannot be empty."
 
     - name: Refresh the API token using Red Hat SSO endpoint
