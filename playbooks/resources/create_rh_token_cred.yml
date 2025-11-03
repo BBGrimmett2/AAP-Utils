@@ -1,3 +1,4 @@
+# Run via ansible-playbook playbooks/resources/create_rh_token_cred.yml on CLI
 ---
 - name: Create Red Hat Token Credential Type in AAP
   hosts: localhost
