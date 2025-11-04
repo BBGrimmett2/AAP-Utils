@@ -37,12 +37,14 @@
 
     - name: Remove entries older than retention period
       vars:
-        dir_name: "{{ entry.path | basename }}"
-        # Matches 20251104T081338 format
-        stamp_str: "{{ dir_name | regex_search('^[0-9]{8}T[0-9]{6}$') | default('') }}"
+        name: "{{ entry.path | basename }}"
+        # exact match like 20251104T081338
+        stamp_str: "{{ name | regex_search('^[0-9]{8}T[0-9]{6}$') | default('') }}"
+        stamp_dt: "{{ stamp_str | to_datetime('%Y%m%dT%H%M%S') if stamp_str | length > 0 else None }}"
         dir_epoch: >-
-          {{ (stamp_str | length > 0)
-            | ternary((stamp_str | strptime('%Y%m%dT%H%M%S') | community.general.to_epoch), 0) }}
+          {% if stamp_dt is not none %}
+          {{ (stamp_dt | to_timestamp | default(stamp_dt | community.general.to_epoch)) | int }}
+          {% else %}0{% endif %}
       ansible.builtin.file:
         path: "{{ entry.path }}"
         state: absent
