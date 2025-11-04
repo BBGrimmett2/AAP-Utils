@@ -26,7 +26,7 @@
     - name: Find Backup Directories
       ansible.builtin.find:
         paths: "{{ backup_dir }}"
-        file_type: directory
+        file_type: any
         depth: 1
       register: found_backups
   
