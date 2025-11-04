@@ -31,15 +31,16 @@
         depth: 1
       register: found_backups
   
-    - name: Compute retention time cutoff
+    - name: Compute cutoff stamp string (now - retention_days)
       ansible.builtin.set_fact:
-       cutoff_epoch: "{{ (ansible_date_time.epoch | int) - ((retention_days | int) * 86400) }}"
+        cutoff_epoch: "{{ (ansible_date_time.epoch | int) - ((retention_days | int) * 86400) }}"
+        # Format as YYYYMMDDTHHMMSS in UTC so it matches your folder names
+        cutoff_stamp: "{{ cutoff_epoch | strftime('%Y%m%dT%H%M%S', 'UTC') }}"
 
-    - name: Remove entries older than retention (by NAME only)
+    - name: Remove entries older than retention (by NAME only, string compare)
       vars:
         name: "{{ entry.path | basename }}"
         stamp: "{{ name | regex_search('^[0-9]{8}T[0-9]{6}$') | default('') }}"
-        epoch: "{{ (stamp | to_datetime('%Y%m%dT%H%M%S') | community.general.to_epoch) if (stamp|length>0) else 0 }}"
       ansible.builtin.file:
         path: "{{ entry.path }}"
         state: absent
@@ -49,5 +50,4 @@
         label: "{{ entry.path }}"
       when:
         - stamp | length > 0
-        - (epoch | int) > 0
-        - (epoch | int) < (cutoff_epoch | int)
+        - stamp < cutoff_stamp
