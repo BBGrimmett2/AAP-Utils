@@ -19,4 +19,15 @@
     - name: Create AAP platform backup
       ansible.builtin.shell: >
         cd {{ installer_dir }} && ansible-playbook -i {{ inventory_path }} ansible.containerized_installer.backup -e backup_dir={{ backuop_dir }}
+      register: backup_result
+
+    - name: Assert backup command ran successfully
+      ansible.builtin.assert:
+        that:
+          - backup_result.rc == 0
+          - "'failed=0' in backup_result.stdout"
+        fail_msg: >
+          Backup failed. Return code={{ backup_result.rc }},
+          output={{ backup_result.stdout_lines | select('search', 'failed') | list }}
+        success_msg: "AAP backup completed successfully
       
