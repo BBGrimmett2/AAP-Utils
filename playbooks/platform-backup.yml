@@ -7,7 +7,7 @@
     backup_base_dir: /opt/ansible/backups/
     backup_dir: "{{ backup_base_dir }}/{{ ansible_date_time.iso8601_basic_short }}"
     inventory_path: /opt/ansible/installer/aap-2.6.1-containerized/inventory-growth
-    retention_days: 0
+    retention_days: 7
   tasks:
     - name: Create AAP platform backup
       ansible.builtin.shell: >
