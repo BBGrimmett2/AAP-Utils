@@ -32,11 +32,12 @@
       register: found_backups
   
     - name: Compute cutoff stamp string (now - retention_days)
-      ansible.builtin.set_fact:
-        cutoff_epoch: "{{ (ansible_date_time.epoch | int) - ((retention_days | int) * 86400) }}"
-    
-    - ansible.builtin.set_fact:
-        cutoff_stamp: "{{ '%Y%m%dT%H%M%S' | strftime(cutoff_epoch | int) }}"
+      block:
+        - ansible.builtin.set_fact:
+            cutoff_epoch: "{{ (ansible_date_time.epoch | int) - ((retention_days | int) * 86400) }}"
+        
+        - ansible.builtin.set_fact:
+            cutoff_stamp: "{{ '%Y%m%dT%H%M%S' | strftime(cutoff_epoch | int) }}"
 
     - name: Remove entries older than retention (by NAME only, string compare)
       vars:
