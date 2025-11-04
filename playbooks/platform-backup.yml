@@ -29,5 +29,5 @@
         fail_msg: >
           Backup failed. Return code={{ backup_result.rc }},
           output={{ backup_result.stdout_lines | select('search', 'failed') | list }}
-        success_msg: "AAP backup completed successfully
+        success_msg: "AAP backup completed successfully"
       
