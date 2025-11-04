@@ -35,16 +35,11 @@
       ansible.builtin.set_fact:
        cutoff_epoch: "{{ (ansible_date_time.epoch | int) - ((retention_days | int) * 86400) }}"
 
-    - name: Remove entries older than retention period
+    - name: Remove entries older than retention (by NAME only)
       vars:
         name: "{{ entry.path | basename }}"
-        # exact match like 20251104T081338
-        stamp_str: "{{ name | regex_search('^[0-9]{8}T[0-9]{6}$') | default('') }}"
-        stamp_dt: "{{ stamp_str | to_datetime('%Y%m%dT%H%M%S') if stamp_str | length > 0 else None }}"
-        dir_epoch: >-
-          {% if stamp_dt is not none %}
-          {{ (stamp_dt | to_timestamp | default(stamp_dt | community.general.to_epoch)) | int }}
-          {% else %}0{% endif %}
+        stamp: "{{ name | regex_search('^[0-9]{8}T[0-9]{6}$') | default('') }}"
+        epoch: "{{ (stamp | to_datetime('%Y%m%dT%H%M%S') | community.general.to_epoch) if (stamp|length>0) else 0 }}"
       ansible.builtin.file:
         path: "{{ entry.path }}"
         state: absent
@@ -53,6 +48,6 @@
         loop_var: entry
         label: "{{ entry.path }}"
       when:
-        - stamp_str | length > 0
-        - (dir_epoch | int) > 0
-        - (dir_epoch | int) < (cutoff_epoch | int)
+        - stamp | length > 0
+        - (epoch | int) > 0
+        - (epoch | int) < (cutoff_epoch | int)
