@@ -50,6 +50,6 @@
       loop_control:
         label: "{{ item.path }}"
       when:
-        - stamp_str is defined
+        - stamp_str | length > 0
         - dir_epoch > 0
         - dir_epoch < cutoff_epoch
