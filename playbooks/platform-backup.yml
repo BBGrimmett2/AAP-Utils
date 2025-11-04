@@ -4,7 +4,7 @@
   hosts: automationutility
   vars:
     installer_dir: /opt/ansible/installer/aap-2.6.1-containerized
-    backuop_dir: /opt/ansible/
+    backuop_dir: /opt/ansible
     inventory_path: /opt/ansible/installer/aap-2.6.1-containerized/inventory-growth
   tasks:
     - name: Ensure backup directory exists
