@@ -5,12 +5,12 @@
   gather_facts: false
   vars:
     installer_dir: /opt/ansible/installer/aap-2.6.1-containerized
-    backuop_dir: /opt/ansible/backups
+    backuop_dir: /opt/ansible/
     inventory_path: /opt/ansible/installer/aap-2.6.1-containerized/inventory-growth
   tasks:
     - name: Ensure backup directory exists
       ansible.builtin.file:
-        path: "{{ backuop_dir }}"
+        path: "{{ backuop_dir }}/{{ ansible_date_time.iso8601_basic_short }}"
         state: directory
         mode: '0755'
         owner: "{{ ansible_user }}"
