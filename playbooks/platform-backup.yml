@@ -4,12 +4,12 @@
   hosts: automationutility
   vars:
     installer_dir: /opt/ansible/installer/aap-2.6.1-containerized
-    backuop_dir: /opt/ansible/
+    backup_dir: /opt/ansible/backups/{{ ansible_date_time.iso8601_basic_short }}
     inventory_path: /opt/ansible/installer/aap-2.6.1-containerized/inventory-growth
   tasks:
     - name: Ensure backup directory exists
       ansible.builtin.file:
-        path: "{{ backuop_dir }}/{{ ansible_date_time.iso8601_basic_short }}"
+        path: "{{ backup_dir }}"
         state: directory
         mode: '0755'
         owner: "{{ ansible_user }}"
@@ -17,7 +17,7 @@
 
     - name: Create AAP platform backup
       ansible.builtin.shell: >
-        cd {{ installer_dir }} && ansible-playbook -i {{ inventory_path }} ansible.containerized_installer.backup -e backup_dir={{ backuop_dir }}
+        cd {{ installer_dir }} && ansible-playbook -i {{ inventory_path }} ansible.containerized_installer.backup -e backup_dir={{ backup_dir }}
       register: backup_result
 
     - name: Assert backup command ran successfully
