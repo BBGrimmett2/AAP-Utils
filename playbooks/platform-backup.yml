@@ -4,7 +4,8 @@
   hosts: automationutility
   vars:
     installer_dir: /opt/ansible/installer/aap-2.6.1-containerized
-    backup_dir: /opt/ansible/backups/{{ ansible_date_time.iso8601_basic_short }}
+    backup_base_dir: /opt/ansible/backups/
+    backup_dir: "{{ backup_base_dir }}/{{ ansible_date_time.iso8601_basic_short }}""
     inventory_path: /opt/ansible/installer/aap-2.6.1-containerized/inventory-growth
     retention_days: 0
   tasks:
@@ -25,7 +26,7 @@
       
     - name: Find Backup Directories
       ansible.builtin.find:
-        paths: "{{ backup_dir }}"
+        paths: "{{ backup_base_dir }}"
         file_type: any
         depth: 1
       register: found_backups
