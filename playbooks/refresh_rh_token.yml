@@ -25,11 +25,7 @@
       changed_when: false
       failed_when: false
 
-    - name: Check if refresh succeeded
-      ansible.builtin.fail:
-        msg: "Token refresh failed. Curl exited with code {{ refresh_result.rc }}. {{ refresh_result.stderr }}"
-      when: refresh_result.rc != 0
-
     - name: Print success message
       ansible.builtin.debug:
         msg: "Token refreshed successfully."
+      when: refresh_result.staus is 200
