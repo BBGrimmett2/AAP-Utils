@@ -28,4 +28,4 @@
     - name: Print success message
       ansible.builtin.debug:
         msg: "Token refreshed successfully."
-      when: refresh_result.staus is 200
+      when: refresh_result.staus == 200
