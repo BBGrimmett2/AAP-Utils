@@ -11,15 +11,19 @@
         fail_msg: "The 'user_token' variable must be provided and cannot be empty."
 
     - name: Refresh the API token using Red Hat SSO endpoint
-      ansible.builtin.command: >
-        curl https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
-        -d grant_type=refresh_token
-        -d client_id="cloud-services"
-        -d refresh_token="{{ console_token }}"
-        --fail --silent --show-error --output /dev/null
+      ansible.builtin.uri:
+        url: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+        method: POST
+        body_format: form-urlencoded
+        body:
+          grant_type: refresh_token
+          client_id: cloud-services
+          refresh_token: "{{ console_token }}"
+        return_content: false
+        status_code: 200
       register: refresh_result
       changed_when: false
-      ignore_errors: true
+      failed_when: false
 
     - name: Check if refresh succeeded
       ansible.builtin.fail:
