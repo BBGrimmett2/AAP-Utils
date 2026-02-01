@@ -25,7 +25,11 @@
       changed_when: false
       failed_when: false
 
-    - name: Print success message
-      ansible.builtin.debug:
-        msg: "Token refreshed successfully."
-      when: refresh_result.staus == 200
+    - name: Verify Red Hat SSO token refresh was successful
+      ansible.builtin.assert:
+        that:
+          - refresh_result.status == 200
+          - refresh_result.json is defined
+          - refresh_result.json.access_token is defined
+        fail_msg: "Red Hat SSO token refresh failed or returned an invalid response"
+        success_msg: "Red Hat SSO token refresh succeeded"
